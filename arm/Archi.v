@@ -20,7 +20,7 @@ Require Import ZArith.
 Require Import Fappli_IEEE.
 Require Import Fappli_IEEE_bits.
 
-Definition big_endian := false.
+Parameter big_endian: bool.
 
 Notation align_int64 := 8%Z (only parsing).
 Notation align_float64 := 8%Z (only parsing).
