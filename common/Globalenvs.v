@@ -973,7 +973,7 @@ Proof.
   transitivity (Some(decode_val chunk (list_repeat (size_chunk_nat chunk) (Byte Byte.zero)))).
   apply Mem.loadbytes_load; auto. rewrite size_chunk_conv.
   eapply store_zeros_loadbytes; eauto. rewrite <- size_chunk_conv; auto.
-  f_equal. destruct chunk; reflexivity.
+  f_equal. destruct chunk; unfold decode_val; unfold decode_int; unfold rev_if_be; destruct Archi.big_endian; reflexivity.
 Qed.
 
 Fixpoint load_store_init_data (m: mem) (b: block) (p: Z) (il: list init_data) {struct il} : Prop :=
