@@ -96,6 +96,7 @@ clinker_options=""
 case "$target" in
   powerpc-*|ppc-*|powerpc64-*|ppc64-*|e5500-*)
     arch="powerpc"
+    is_big_endian="true"
     case "$target" in
       powerpc64-*|ppc64-*) model="ppc64";;
       e5500-*) model="e5500";;
@@ -132,6 +133,7 @@ case "$target" in
     esac;;
   arm*-*)
     arch="arm"
+    is_big_endian="false"
     case "$target" in
       armv6-*) model="armv6";;
       arm-*|armv7a-*) model="armv7a";;
@@ -164,6 +166,7 @@ case "$target" in
     arch="ia32"
     model="sse2"
     abi="standard"
+    is_big_endian="false"
     struct_passing="ints"
     struct_return="ref"
     system="linux"
@@ -179,6 +182,7 @@ case "$target" in
     arch="ia32"
     model="sse2"
     abi="standard"
+    is_big_endian="false"
     struct_passing="ints"
     struct_return="int1248"    # to check!
     system="bsd"
@@ -196,6 +200,7 @@ case "$target" in
     arch="ia32"
     model="sse2"
     abi="macosx"
+    is_big_endian="false"
     struct_passing="ints"
     struct_return="int1248"
     system="macosx"
@@ -218,6 +223,7 @@ case "$target" in
     arch="ia32"
     model="sse2"
     abi="standard"
+    is_big_endian="false"
     struct_passing="ints"
     struct_return="ref"
     system="cygwin"
@@ -370,6 +376,7 @@ cat >> Makefile.config <<EOF
 ARCH=$arch
 MODEL=$model
 ABI=$abi
+IS_BIG_ENDIAN=$is_big_endian
 STRUCT_PASSING=$struct_passing
 STRUCT_RETURN=$struct_return
 SYSTEM=$system

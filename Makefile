@@ -202,6 +202,7 @@ compcert.ini: Makefile.config
          echo "arch=$(ARCH)"; \
          echo "model=$(MODEL)"; \
          echo "abi=$(ABI)"; \
+         echo "is_big_endian=$(IS_BIG_ENDIAN)"; \
          echo "system=$(SYSTEM)"; \
          echo "has_runtime_lib=$(HAS_RUNTIME_LIB)"; \
          echo "has_standard_headers=$(HAS_STANDARD_HEADERS)"; \
