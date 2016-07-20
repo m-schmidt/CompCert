@@ -86,14 +86,20 @@ Definition dummy_float_reg := F0.   (**r Used in [Coloring]. *)
   For the "softfloat" convention, results of FP types should be passed
   in [R0] or [R0,R1].  This doesn't fit the CompCert register model,
   so we have code in [arm/PrintAsm.ml] that inserts additional moves
-  to/from [F0]. *)
+  to/from [F0].
+
+  Concerning endianess for 64bit values in register pairs, the contents
+  of the registers is as if the value had been loaded from memory
+  representation with a single LDM instruction. *)
 
 Definition loc_result (s: signature) : rpair mreg :=
   match s.(sig_res) with
   | None => One R0
   | Some (Tint | Tany32) => One R0
   | Some (Tfloat | Tsingle | Tany64) => One F0
-  | Some Tlong => Twolong R1 R0
+  | Some Tlong => if Archi.big_endian
+                    then Twolong R0 R1
+                    else Twolong R1 R0
   end.
 
 (** The result registers have types compatible with that given in the signature. *)
@@ -102,7 +108,7 @@ Lemma loc_result_type:
   forall sig,
   subtype (proj_sig_res sig) (typ_rpair mreg_type (loc_result sig)) = true.
 Proof.
-  intros. unfold proj_sig_res, loc_result. destruct (sig_res sig) as [[]|]; auto.
+  intros. unfold proj_sig_res, loc_result. destruct (sig_res sig) as [[]|]; destruct Archi.big_endian; auto.
 Qed.
 
 (** The result locations are caller-save registers *)
@@ -112,7 +118,7 @@ Lemma loc_result_caller_save:
   forall_rpair (fun r => is_callee_save r = false) (loc_result s).
 Proof.
   intros.
-  unfold loc_result. destruct (sig_res s) as [[]|]; simpl; auto.
+  unfold loc_result. destruct (sig_res s) as [[]|]; destruct Archi.big_endian; simpl; auto.
 Qed.
 
 (** If the result is in a pair of registers, those registers are distinct and have type [Tint] at least. *)
@@ -124,7 +130,9 @@ Lemma loc_result_pair:
   | Twolong r1 r2 => r1 <> r2 /\ sg.(sig_res) = Some Tlong /\ subtype Tint (mreg_type r1) = true /\ subtype Tint (mreg_type r2) = true
   end.
 Proof.
-  intros; unfold loc_result; destruct (sig_res sg) as [[]|]; auto. intuition congruence. 
+  intros; unfold loc_result; destruct (sig_res sg) as [[]|]; destruct Archi.big_endian; auto.
+  intuition congruence.
+  intuition congruence.
 Qed.
 
 (** ** Location of function arguments *)
