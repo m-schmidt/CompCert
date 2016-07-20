@@ -355,7 +355,7 @@ Proof.
   destruct (zlt ir' 4).
   destruct H. subst p. split; apply ireg_param_caller_save. 
   eapply IHtyl; eauto.
-  destruct H. subst p. split; (split; [ omega | auto ]).
+  destruct H. subst p. split; destruct Archi.big_endian; (split; [ omega | auto ]).
   eapply Y. eapply IHtyl; eauto. omega.
 - (* single *)
   destruct (zlt fr 8); destruct H.
@@ -408,7 +408,7 @@ Proof.
   destruct H.
   destruct (zlt ofs' 0); subst p.
   split; apply ireg_param_caller_save.
-  split; (split; [xomega|auto]).
+  split; destruct Archi.big_endian; (split; [xomega|auto]).
   eapply Y. eapply IHtyl; eauto. omega.
 - (* single *)
   destruct H.
