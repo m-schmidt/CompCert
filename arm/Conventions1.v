@@ -98,8 +98,8 @@ Definition loc_result (s: signature) : rpair mreg :=
   | Some (Tint | Tany32) => One R0
   | Some (Tfloat | Tsingle | Tany64) => One F0
   | Some Tlong => if Archi.big_endian
-                    then Twolong R0 R1
-                    else Twolong R1 R0
+                  then Twolong R0 R1
+                  else Twolong R1 R0
   end.
 
 (** The result registers have types compatible with that given in the signature. *)
