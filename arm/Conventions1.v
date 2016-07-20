@@ -184,11 +184,13 @@ Fixpoint loc_arguments_hf
       then One (R (freg_param fr)) :: loc_arguments_hf tys ir (fr + 1) ofs
       else One (S Outgoing ofs Tsingle) :: loc_arguments_hf tys ir fr (ofs + 1)
   | Tlong :: tys =>
+      let ohi := if Archi.big_endian then 0 else 1 in
+      let olo := if Archi.big_endian then 1 else 0 in
       let ir := align ir 2 in
       if zlt ir 4
-      then Twolong (R (ireg_param (ir + 1))) (R (ireg_param ir)) :: loc_arguments_hf tys (ir + 2) fr ofs
+      then Twolong (R (ireg_param (ir + ohi))) (R (ireg_param (ir + olo))) :: loc_arguments_hf tys (ir + 2) fr ofs
       else let ofs := align ofs 2 in
-           Twolong (S Outgoing (ofs + 1) Tint) (S Outgoing ofs Tint) :: loc_arguments_hf tys ir fr (ofs + 2)
+           Twolong (S Outgoing (ofs + ohi) Tint) (S Outgoing (ofs + olo) Tint) :: loc_arguments_hf tys ir fr (ofs + 2)
   end.
 
 (** For the "softfloat" configuration, as well as for variable-argument functions
@@ -226,9 +228,11 @@ Fixpoint loc_arguments_sf
       One (if zlt ofs 0 then R (freg_param (ofs + 4)) else S Outgoing ofs Tsingle)
       :: loc_arguments_sf tys (ofs + 1)
   | Tlong :: tys =>
+      let ohi := if Archi.big_endian then 0 else 1 in
+      let olo := if Archi.big_endian then 1 else 0 in
       let ofs := align ofs 2 in
-      Twolong (if zlt ofs 0 then R (ireg_param (ofs+1+4)) else S Outgoing (ofs+1) Tint)
-              (if zlt ofs 0 then R (ireg_param (ofs+4)) else S Outgoing ofs Tint)
+      Twolong (if zlt ofs 0 then R (ireg_param (ofs+ohi+4)) else S Outgoing (ofs+ohi) Tint)
+              (if zlt ofs 0 then R (ireg_param (ofs+olo+4)) else S Outgoing (ofs+olo) Tint)
       :: loc_arguments_sf tys (ofs + 2)
   end.
 
