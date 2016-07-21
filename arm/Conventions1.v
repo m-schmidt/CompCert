@@ -525,6 +525,12 @@ Proof.
 - (* long *)
   destruct (zlt (align ir 2) 4).
   destruct H. discriminate. destruct H. discriminate. eauto.
+  destruct Archi.big_endian.
+  destruct H. inv H.
+  eapply Zle_trans. 2: apply size_arguments_hf_above. simpl; omega.
+  destruct H. inv H.
+  rewrite <- Zplus_assoc. simpl. apply size_arguments_hf_above.
+  eauto.
   destruct H. inv H.
   rewrite <- Zplus_assoc. simpl. apply size_arguments_hf_above.
   destruct H. inv H.
