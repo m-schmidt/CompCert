@@ -574,9 +574,15 @@ Proof.
   eauto.
 - (* long *)
   destruct H.
+  destruct Archi.big_endian.
+  destruct (zlt (align ofs0 2) 0); inv H.
+  eapply Zle_trans. 2: apply size_arguments_sf_above. simpl; xomega.
   destruct (zlt (align ofs0 2) 0); inv H.
   rewrite <- Zplus_assoc. simpl. apply size_arguments_sf_above.
   destruct H.
+  destruct Archi.big_endian.
+  destruct (zlt (align ofs0 2) 0); inv H.
+  rewrite <- Zplus_assoc. simpl. apply size_arguments_sf_above.
   destruct (zlt (align ofs0 2) 0); inv H.
   eapply Zle_trans. 2: apply size_arguments_sf_above. simpl; xomega.
   eauto.
