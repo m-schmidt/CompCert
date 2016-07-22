@@ -220,10 +220,12 @@ module Target (Opt: PRINTER_OPTIONS) : TARGET =
       fprintf oc "	.balign	4\n";
       Hashtbl.iter
         (fun bf lbl ->
-          (* Little-endian floats *)
+          (* Big or little-endian floats *)
           let bfhi = Int64.shift_right_logical bf 32
           and bflo = Int64.logand bf 0xFFFF_FFFFL in
-          fprintf oc ".L%d:	.word	0x%Lx, 0x%Lx\n" lbl bflo bfhi)
+          if Archi.big_endian
+          then fprintf oc ".L%d:	.word	0x%Lx, 0x%Lx\n" lbl bfhi bflo
+          else fprintf oc ".L%d:	.word	0x%Lx, 0x%Lx\n" lbl bflo bfhi)
         float_labels;
       Hashtbl.iter
         (fun bf lbl ->
@@ -287,9 +289,13 @@ module Target (Opt: PRINTER_OPTIONS) : TARGET =
       let fixup_double oc dir f i1 i2 =
         match dir with
         | Incoming ->     (* f <- (i1, i2)  *)
-            fprintf oc "	vmov	%a, %a, %a\n" freg f ireg i1 ireg i2
+            if Archi.big_endian
+            then fprintf oc "	vmov	%a, %a, %a\n" freg f ireg i2 ireg i1
+            else fprintf oc "	vmov	%a, %a, %a\n" freg f ireg i1 ireg i2
         | Outgoing ->     (* (i1, i2) <- f *)
-            fprintf oc "	vmov	%a, %a, %a\n" ireg i1 ireg i2 freg f
+            if Archi.big_endian
+            then fprintf oc "	vmov	%a, %a, %a\n" ireg i2 ireg i1 freg f
+            else fprintf oc "	vmov	%a, %a, %a\n" ireg i1 ireg i2 freg f
 
       let fixup_single oc dir f i =
         match dir with

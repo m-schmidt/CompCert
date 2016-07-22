@@ -85,7 +85,7 @@ Definition dummy_float_reg := F0.   (**r Used in [Coloring]. *)
 
   For the "softfloat" convention, results of FP types should be passed
   in [R0] or [R0,R1].  This doesn't fit the CompCert register model,
-  so we have code in [arm/PrintAsm.ml] that inserts additional moves
+  so we have code in [arm/TargetPrinter.ml] that inserts additional moves
   to/from [F0].
 
   Concerning endianess for 64bit values in register pairs, the contents
