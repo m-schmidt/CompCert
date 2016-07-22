@@ -47,7 +47,7 @@ For ARM targets, the "arm-" prefix can be refined into:
   armv7r-              ARMv7-R + VFPv3-d16
   armv7m-              ARMv7-M + VFPv3-d16
 
-For ARM targets, the endianess can optionally be speficied as a suffix:
+For ARM targets, the endianness can optionally be speficied as a suffix:
   -big                 Big endian
   -little              Little endian   (default)
 
@@ -92,25 +92,25 @@ done
 
 
 #
-# Extract Architecture, Model and Default Endianess
+# Extract Architecture, Model and Default Endianness
 #
 case "$target" in
   arm-*|armv7a-*)
-      arch="arm"; model="armv7a"; endianess="little";;
+      arch="arm"; model="armv7a"; endianness="little";;
   armv6-*)
-      arch="arm"; model="armv6"; endianess="little";;
+      arch="arm"; model="armv6"; endianness="little";;
   armv7r-*)
-      arch="arm"; model="armv7r"; endianess="little";;
+      arch="arm"; model="armv7r"; endianness="little";;
   armv7m-*)
-      arch="arm"; model="armv7m"; endianess="little";;
+      arch="arm"; model="armv7m"; endianness="little";;
   ia32-*)
-      arch="ia32"; model="sse2"; endianess="little";;
+      arch="ia32"; model="sse2"; endianness="little";;
   powerpc-*|ppc-*)
-      arch="powerpc"; model="ppc32"; endianess="big";;
+      arch="powerpc"; model="ppc32"; endianness="big";;
   powerpc64-*|ppc64-*)
-      arch="powerpc"; model="ppc64"; endianess="big";;
+      arch="powerpc"; model="ppc64"; endianness="big";;
   e5500-*)
-      arch="powerpc"; model="e5500"; endianess="big";;
+      arch="powerpc"; model="e5500"; endianness="big";;
   manual)
       ;;
   "")
@@ -129,23 +129,23 @@ target=${target#[a-zA-Z0-9]*-}
 
 
 #
-# ARM: Optional Endianess Specification
+# ARM: Optional Endianness Specification
 #
 if test "$arch" = "arm"; then
   case "$target" in
     *-big)
-        endianess="big";
+        endianness="big";
         target=${target%"-big"}
         ;;
     *-little)
-        endianess="little";
+        endianness="little";
         target=${target%"-little"}
         ;;
   esac
 else
   case "$target" in
     *-big|*-little)
-        echo "Error: endianess may only be specified for ARM architecture." 1>&2
+        echo "Error: endianness may only be specified for ARM architecture." 1>&2
         echo "$usage" 1>&2
         exit 2
         ;;
@@ -471,7 +471,7 @@ CLINKER=$clinker
 CLINKER_OPTIONS=$clinker_options
 CPREPRO=$cprepro
 CPREPRO_OPTIONS=$cprepro_options
-ENDIANESS=$endianess
+ENDIANNESS=$endianness
 HAS_RUNTIME_LIB=$has_runtime_lib
 HAS_STANDARD_HEADERS=$has_standard_headers
 LIBMATH=$libmath
@@ -507,10 +507,10 @@ MODEL=
 # ABI=standard      # for IA32
 ABI=
 
-# Target endianess
-# ENDIANESS=big     # for ARM or PowerPC
-# ENDIANESS=little  # for ARM or IA32
-ENDIANESS=
+# Target endianness
+# ENDIANNESS=big     # for ARM or PowerPC
+# ENDIANNESS=little  # for ARM or IA32
+ENDIANNESS=
 
 # Default calling conventions for passing structs and unions by value
 # See options -fstruct-passing=<style> and -fstruct-return=<style>
@@ -596,7 +596,7 @@ CompCert configuration:
     Target architecture........... $arch
     Hardware model................ $model
     Application binary interface.. $abi
-    Endianess..................... $endianess
+    Endianness.................... $endianness
     Composite passing conventions. arguments: $struct_passing, return values: $struct_return
     OS and development env........ $system
     C compiler.................... $cc

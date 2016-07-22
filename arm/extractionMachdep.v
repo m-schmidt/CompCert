@@ -25,6 +25,6 @@ Extract Constant Archi.abi =>
    | _ -> assert false
    end".
 
-(* Choice of endianess *)
+(* Choice of endianness *)
 Extract Constant Archi.big_endian =>
   "Configuration.is_big_endian".

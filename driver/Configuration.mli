@@ -20,7 +20,7 @@ val abi: string
   (** ABI to use *)
 
 val is_big_endian: bool
-  (** Endianess to use *)
+  (** Endianness to use *)
 
 val system: string
   (** Flavor of operating system that runs CompCert *)

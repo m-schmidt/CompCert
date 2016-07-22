@@ -88,7 +88,7 @@ Definition dummy_float_reg := F0.   (**r Used in [Coloring]. *)
   so we have code in [arm/TargetPrinter.ml] that inserts additional moves
   to/from [F0].
 
-  Concerning endianess for 64bit values in register pairs, the contents
+  Concerning endianness for 64bit values in register pairs, the contents
   of the registers is as if the value had been loaded from memory
   representation with a single LDM instruction. *)
 
@@ -353,7 +353,7 @@ Proof.
   set (ir' := align ir 2) in *.
   assert (ofs <= align ofs 2) by (apply align_le; omega).
   destruct (zlt ir' 4).
-  destruct H. subst p. split; apply ireg_param_caller_save. 
+  destruct H. subst p. split; apply ireg_param_caller_save.
   eapply IHtyl; eauto.
   destruct H. subst p. split; destruct Archi.big_endian; (split; [ omega | auto ]).
   eapply Y. eapply IHtyl; eauto. omega.

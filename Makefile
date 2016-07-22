@@ -202,7 +202,7 @@ compcert.ini: Makefile.config
          echo "arch=$(ARCH)"; \
          echo "model=$(MODEL)"; \
          echo "abi=$(ABI)"; \
-         echo "endianess=$(ENDIANESS)"; \
+         echo "endianness=$(ENDIANNESS)"; \
          echo "system=$(SYSTEM)"; \
          echo "has_runtime_lib=$(HAS_RUNTIME_LIB)"; \
          echo "has_standard_headers=$(HAS_STANDARD_HEADERS)"; \

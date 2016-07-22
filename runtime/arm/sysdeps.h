@@ -98,10 +98,10 @@ f:
 
 
 
-// Endianess dependencies
+// Endianness dependencies
 
 // Location of high and low word of first register pair (r0:r1)
-#ifdef ENDIANESS_big
+#ifdef ENDIANNESS_big
 #define Reg0HI r0
 #define Reg0LO r1
 #else
@@ -110,7 +110,7 @@ f:
 #endif
 
 // Location of high and low word of second register pair (r2:r3)
-#ifdef ENDIANESS_big
+#ifdef ENDIANNESS_big
 #define Reg1HI r2
 #define Reg1LO r3
 #else
@@ -119,7 +119,7 @@ f:
 #endif
 
 // Location of high and low word of third register pair (r4:r5)
-#ifdef ENDIANESS_big
+#ifdef ENDIANNESS_big
 #define Reg2HI r4
 #define Reg2LO r5
 #else
@@ -128,7 +128,7 @@ f:
 #endif
 
 // Location of high and low word of fourth register pair (r6:r7)
-#ifdef ENDIANESS_big
+#ifdef ENDIANNESS_big
 #define Reg3HI r6
 #define Reg3LO r7
 #else
