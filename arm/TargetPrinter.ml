@@ -289,13 +289,9 @@ module Target (Opt: PRINTER_OPTIONS) : TARGET =
       let fixup_double oc dir f i1 i2 =
         match dir with
         | Incoming ->     (* f <- (i1, i2)  *)
-            if Archi.big_endian
-            then fprintf oc "	vmov	%a, %a, %a\n" freg f ireg i2 ireg i1
-            else fprintf oc "	vmov	%a, %a, %a\n" freg f ireg i1 ireg i2
+            fprintf oc "	vmov	%a, %a, %a\n" freg f ireg i1 ireg i2
         | Outgoing ->     (* (i1, i2) <- f *)
-            if Archi.big_endian
-            then fprintf oc "	vmov	%a, %a, %a\n" ireg i2 ireg i1 freg f
-            else fprintf oc "	vmov	%a, %a, %a\n" ireg i1 ireg i2 freg f
+            fprintf oc "	vmov	%a, %a, %a\n" ireg i1 ireg i2 freg f
 
       let fixup_single oc dir f i =
         match dir with
@@ -316,7 +312,9 @@ module Target (Opt: PRINTER_OPTIONS) : TARGET =
           | (Tfloat | Tany64) :: tyl' ->
               let i = (i + 1) land (-2) in
               if i >= 4 then 0 else begin
-                fixup_double oc dir (freg_param i) (ireg_param i) (ireg_param (i+1));
+                if Archi.big_endian
+                then fixup_double oc dir (freg_param i) (ireg_param (i+1)) (ireg_param i)
+                else fixup_double oc dir (freg_param i) (ireg_param i) (ireg_param (i+1));
                 1 + fixup (i+2) tyl'
               end
           | Tsingle :: tyl' ->
@@ -861,13 +859,11 @@ module Target (Opt: PRINTER_OPTIONS) : TARGET =
         cfi_section oc
       end
 
-
     let print_epilogue oc =
       if !Clflags.option_g then begin
         Debug.compute_gnu_file_enum (fun f -> ignore (print_file oc f));
         section oc Section_text;
       end
-
 
     let default_falignment = 4
 
